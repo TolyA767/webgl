@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Лабораторная работа №5 — Вариант 12</title>
+    <style>
+        body { margin: 0; overflow: hidden; background: #222; }
+        canvas { display: block; }
+        #info {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: white;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            background: rgba(0,0,0,0.5);
+            padding: 8px 12px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="info">Вариант 12 — Мурсалимов Анатолий Идрисович</div>
+
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+        }
+    }
+    </script>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+        import { TeapotGeometry } from 'three/addons/geometries/TeapotGeometry.js';
+
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x222222);
+
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 10000);
+        camera.position.set(0, 200, 600);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        document.body.appendChild(renderer.domElement);
+
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+        scene.add(ambientLight);
+
+        const dirLight = new THREE.DirectionalLight(0xffffff, 1.0);
+        dirLight.position.set(200, 300, 200);
+        scene.add(dirLight);
+
+        const dirLight2 = new THREE.DirectionalLight(0xffffff, 0.5);
+        dirLight2.position.set(-200, -100, -200);
+        scene.add(dirLight2);
+
+        function makeMaterial(color) {
+            return new THREE.MeshPhongMaterial({ color: color, shininess: 80, specular: 0x444444 });
+        }
+
+        const purpleMat = makeMaterial(0x9966FF);
+        const yellowMat = makeMaterial(0xFFDD44);
+        const pinkMat = makeMaterial(0xFF88CC);
+        const greenMat = makeMaterial(0x66DD66);
+        const blueMat = makeMaterial(0x66CCFF);
+        const tealMat = makeMaterial(0x33AAAA);
+
+        const fig1 = new THREE.Mesh(new THREE.CylinderGeometry(40, 70, 80, 6), purpleMat);
+        fig1.position.set(-250, 150, -100);
+        fig1.rotation.set(0.3, 0.5, 0.2);
+        scene.add(fig1);
+
+        const fig2 = new THREE.Mesh(new THREE.CylinderGeometry(0, 70, 100, 4), yellowMat);
+        fig2.position.set(0, 150, -100);
+        fig2.rotation.set(0, 0.3, 0);
+        scene.add(fig2);
+
+        const fig3 = new THREE.Mesh(new THREE.CylinderGeometry(55, 55, 90, 6), pinkMat);
+        fig3.position.set(250, 150, -100);
+        fig3.rotation.set(0.2, 0, 0);
+        scene.add(fig3);
+
+        const fig4 = new THREE.Mesh(new THREE.CylinderGeometry(55, 55, 100, 6), pinkMat);
+        fig4.position.set(-250, 0, 0);
+        fig4.rotation.set(0.4, 0.6, 0.3);
+        scene.add(fig4);
+
+        const fig5 = new THREE.Mesh(new THREE.CylinderGeometry(0, 60, 110, 16), greenMat);
+        fig5.position.set(0, 0, 0);
+        scene.add(fig5);
+
+        const fig6 = new THREE.Mesh(new THREE.CylinderGeometry(35, 65, 90, 6), purpleMat);
+        fig6.position.set(250, 0, 0);
+        fig6.rotation.set(0.1, 0.2, 0);
+        scene.add(fig6);
+
+        const fig7 = new THREE.Mesh(new THREE.CylinderGeometry(45, 45, 100, 20), greenMat);
+        fig7.position.set(-250, -150, 100);
+        fig7.rotation.set(0.5, 0.8, 0.4);
+        scene.add(fig7);
+
+        const fig8 = new THREE.Mesh(new THREE.CylinderGeometry(60, 60, 70, 3), yellowMat);
+        fig8.position.set(0, -150, 100);
+        fig8.rotation.set(Math.PI / 2, 0, 0.3);
+        scene.add(fig8);
+
+        const fig9 = new THREE.Mesh(new THREE.BoxGeometry(130, 60, 80), blueMat);
+        fig9.position.set(250, -150, 100);
+        fig9.rotation.set(0.1, 0.3, 0.05);
+        scene.add(fig9);
+
+        const teapot = new THREE.Mesh(new TeapotGeometry(50, 10), tealMat);
+        teapot.position.set(0, -220, 250);
+        teapot.rotation.y = 0.3;
+        scene.add(teapot);
+
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html>
